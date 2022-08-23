@@ -70,7 +70,7 @@ html.has-scroll-dragging {
       bottom: 0; }
 
 
-video {
+video{
     object-fit: cover;
     height: 100vh;
     width: 100vw;
@@ -81,6 +81,10 @@ video {
     z-index: -1;
 }
 
+.video-queued{
+    display: none;
+}
+
 .content{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     position: relative;
@@ -89,4 +93,27 @@ video {
     font-size: large;
     width: 80vw;
     height: 4000px;
+}
+
+.ctrl{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important;
+    position: absolute;
+    color: bisque !important;
+    font-size: 6vh;
+    z-index: 100;
+}
+
+.ctrl a{
+    color: bisque !important;
+    font-style: normal !important;
+    text-decoration: none !important;
+}
+#next{
+    right: 1vw;
+    top: 47vh;
+}
+
+#prev{
+    left: 1vw;
+    top: 47vh;
 }

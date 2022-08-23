@@ -5,6 +5,16 @@
     <script src="./bundle.js"></script>
 </head>
 <body>
+    <div id="next" class="ctrl">
+        <a href="javascript:void(0);">
+            &gt;
+        </a>
+    </div>
+    <div id="prev" class="ctrl">
+        <a href="javascript:void(0);">
+            &lt;
+        </a>
+    </div>
     <div data-scroll-container>
         <div class="content" data-scroll>
 
@@ -20,8 +30,21 @@
         </div>
     </div>
 
-    <video id="background-video" preload muted loop>
+    <video id="video-0" class="video-current" preload muted loop>
         <source src="knee2.mp4" type="video/mp4">
     </video>
+
+    <video id="video-1" class="video-queued" preload muted loop>
+        <source src="dots.mp4" type="video/mp4">
+    </video>
+
+    <video id="video-2" class="video-queued" preload muted loop>
+        <source src="dots.mp4" type="video/mp4">
+    </video>
+
+    <!---video id="prev-video" preload muted loop>
+        <source src="knee2.mp4" type="video/mp4">
+    </video--->
+
 </body>
 </html> 
