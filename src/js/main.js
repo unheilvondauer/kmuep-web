@@ -3,7 +3,7 @@ import LocomotiveScroll from 'locomotive-scroll';
 
 
 const video_sources = ['./knee2.mp4', './knee1.mp4', './dots.mp4', './ketchup.mp4'];
-//const section_ids = ['#data-0', '#data-1', '#data-2', '#data-3'];
+const section_ids = ['#data-0', '#data-1', '#data-2', '#data-3'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -21,7 +21,7 @@ window.addEventListener('load', function () {
         el: document.querySelector('[data-scroll-container]'),
         smooth: true,
         lerp: 0.05,
-        initPosition: {x: 0, y: 0}
+        getSpeed: true
     });
 
     var vidProg = 0.0;
@@ -35,6 +35,7 @@ window.addEventListener('load', function () {
 
     var videos = [video1, video2];
     var source_pos = 0;
+    var pos_before = 0;
     var video = video0;
     const btnNext = this.document.querySelector('#next');
     const btnPrev = this.document.querySelector('#prev');
@@ -76,6 +77,13 @@ window.addEventListener('load', function () {
         source.setAttribute('type', 'video/mp4');
         videos[vnum].appendChild(source);
         videos[vnum].load(); 
+
+        document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
+        document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
+        pos_before = source_pos;
+
+        scroll.scrollTo(0.18);
+
     }
     btnNext.addEventListener('click', (args) => {
         next_video(false, args);
@@ -87,12 +95,17 @@ window.addEventListener('load', function () {
     
     scroll.on('scroll', (args) => {
         // Get all current elements : args.currentElements
-        //console.log(args);
+        console.log(args.speed);
         if(typeof args.currentElements['el0'] === 'object') {
             let progress = args.currentElements['el0'].progress;
             console.log(progress);
             vidProg = progress;
             video.currentTime = video.duration * vidProg;
+            if(args.speed == 0){
+                videos.forEach((value) => {
+                    value.currentTime = value.duration * vidProg;
+                });
+            }
             // ouput log example: 0.34
             // gsap example : myGsapAnimation.progress(progress);
         }
