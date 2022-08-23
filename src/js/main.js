@@ -2,43 +2,87 @@
 import LocomotiveScroll from 'locomotive-scroll';
 
 
-//const video_sources = ['./dots.mp4', './knee1.mp4', './knee2.mp4'];
+const video_sources = ['./knee2.mp4', './knee1.mp4', './dots.mp4', './ketchup.mp4'];
+//const section_ids = ['#data-0', '#data-1', '#data-2', '#data-3'];
+
+function clamp(num, min, max){
+    if (num > max){
+        return min;
+    }
+    if (num < min){
+        return max;
+    }
+    return num;
+}
+
 
 window.addEventListener('load', function () {
     const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
         smooth: true,
-        lerp: 0.05
+        lerp: 0.05,
+        initPosition: {x: 0, y: 0}
     });
 
     var vidProg = 0.0;
     const video0 = document.querySelector('#video-0');
     const video1 = document.querySelector('#video-1');
     const video2 = document.querySelector('#video-2');
-    var videos = [video1, video2, video0];
+
+    video0.addEventListener('animationend', () => {video0.classList.remove('video-current'); video0.classList.add('video-queued');});
+    video1.addEventListener('animationend', () => {video1.classList.remove('video-current'); video1.classList.add('video-queued');});
+    video2.addEventListener('animationend', () => {video2.classList.remove('video-current'); video2.classList.add('video-queued');});
+
+    var videos = [video1, video2];
+    var source_pos = 0;
     var video = video0;
     const btnNext = this.document.querySelector('#next');
     const btnPrev = this.document.querySelector('#prev');
 
 
-    btnNext.addEventListener('click', (args) => {
+    function next_source(backwards){
+        if (backwards){
+            source_pos = clamp((source_pos - 1), 0, video_sources.length -1);
+            return video_sources[clamp((source_pos - 1), 0, video_sources.length -1)];
+        } else {
+            source_pos = clamp((source_pos + 1), 0, video_sources.length -1);
+            return video_sources[clamp((source_pos + 1), 0, video_sources.length -1)];
+        }
+        
+    }
+
+    function next_video(backwards, args){
         console.log(args);
-        video.classList.remove('video-current');
-        video.classList.add('video-queued');
-        video = videos.shift();
-        videos.push(video);
+        var anum = 1;
+        var vnum = 0;
+        if (backwards){
+            videos.unshift(video);
+            video = videos.pop();
+            vnum = 1;
+            anum = 0;
+        }else{
+            videos.push(video);
+            video = videos.shift();
+            vnum = 0;
+            anum = 1;
+        }
+        video.classList.remove('anim-fade-out');
         video.classList.remove('video-queued');
         video.classList.add('video-current');
+        videos[anum].classList.add('anim-fade-out');
+        videos[vnum].removeChild(videos[vnum].children[0]);
+        var source = document.createElement('source');
+        source.setAttribute('src', next_source(backwards));
+        source.setAttribute('type', 'video/mp4');
+        videos[vnum].appendChild(source);
+        videos[vnum].load(); 
+    }
+    btnNext.addEventListener('click', (args) => {
+        next_video(false, args);
     });
 
     btnPrev.addEventListener('click', (args) => {
-        console.log(args);
-        video.classList.remove('video-current');
-        video.classList.add('video-queued');
-        video = videos.pop();
-        videos.unshift(video);
-        video.classList.remove('video-queued');
-        video.classList.add('video-current');
+        next_video(true, args);
     });
     
     scroll.on('scroll', (args) => {
@@ -46,7 +90,7 @@ window.addEventListener('load', function () {
         //console.log(args);
         if(typeof args.currentElements['el0'] === 'object') {
             let progress = args.currentElements['el0'].progress;
-            //console.log(progress);
+            console.log(progress);
             vidProg = progress;
             video.currentTime = video.duration * vidProg;
             // ouput log example: 0.34
