@@ -2,7 +2,7 @@
 import LocomotiveScroll from 'locomotive-scroll';
 
 
-const video_sources = ['./knee2.mp4', './knee1.mp4', './dots.mp4', './ketchup.mp4'];
+const video_sources = ['./knee_final_small.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './sieder_final_small.mp4'];
 const section_ids = ['#data-0', '#data-1', '#data-2', '#data-3'];
 
 function clamp(num, min, max){
@@ -20,7 +20,7 @@ window.addEventListener('load', function () {
     const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
         smooth: true,
-        lerp: 0.05,
+        lerp: 0.1,
         getSpeed: true
     });
 
@@ -99,7 +99,8 @@ window.addEventListener('load', function () {
         if(typeof args.currentElements['el0'] === 'object') {
             let progress = args.currentElements['el0'].progress;
             console.log(progress);
-            vidProg = progress;
+            vidProg = Math.min(Math.max(progress-0.17,0.01)*1.8,0.99);
+
             video.currentTime = video.duration * vidProg;
             if(args.speed == 0){
                 videos.forEach((value) => {
