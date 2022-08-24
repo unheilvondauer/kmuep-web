@@ -3,7 +3,7 @@ import LocomotiveScroll from 'locomotive-scroll';
 
 
 const video_sources = ['./knee_final_small.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './sieder_final_small.mp4'];
-const section_ids = ['#data-0', '#data-1', '#data-2', '#data-3'];
+const section_ids = ['#page_start', '#page_ketchup', '#page_rain', '#page_sieder'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -14,7 +14,6 @@ function clamp(num, min, max){
     }
     return num;
 }
-
 
 window.addEventListener('load', function () {
     const scroll = new LocomotiveScroll({
@@ -39,6 +38,13 @@ window.addEventListener('load', function () {
     var video = video0;
     const btnNext = this.document.querySelector('#next');
     const btnPrev = this.document.querySelector('#prev');
+    const scrollBtns = this.document.querySelectorAll('.btn_scroll');
+    scrollBtns.forEach((value) => {
+        var scrollpos = parseInt(value.dataset.scrollpos);
+        value.addEventListener('click', () => {scroll.scrollTo(scrollpos);});
+    });
+
+    
 
 
     function next_source(backwards){
@@ -99,7 +105,7 @@ window.addEventListener('load', function () {
         if(typeof args.currentElements['el0'] === 'object') {
             let progress = args.currentElements['el0'].progress;
             console.log(progress);
-            vidProg = Math.min(Math.max(progress-0.17,0.01)*1.8,0.99);
+            vidProg = Math.fround(Math.min(Math.max(progress-0.17,0.02)*1.8,0.98));
 
             video.currentTime = video.duration * vidProg;
             if(args.speed == 0){
