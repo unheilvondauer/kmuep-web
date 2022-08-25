@@ -2,8 +2,8 @@
 import LocomotiveScroll from 'locomotive-scroll';
 
 
-const video_sources = ['./knee_final_small.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './wasser_final_small.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
-const section_ids = ['#page_start', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder'];
+const video_sources = ['./knee_final_small.mp4', 'rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', 'dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
+const section_ids = ['#page_start', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -79,11 +79,14 @@ window.addEventListener('load', function () {
         videos[anum].classList.add('anim-fade-out');
         videos[vnum].removeChild(videos[vnum].children[0]);
         var source = document.createElement('source');
-        source.setAttribute('src', next_source(backwards));
+        var src = next_source(backwards);
+        source.setAttribute('src', src);
         source.setAttribute('type', 'video/mp4');
         videos[vnum].appendChild(source);
         videos[vnum].load(); 
-
+        console.log('Backwards: ', backwards);
+        console.log('vnum: %d, anum: %d', vnum, anum);
+        console.log('src: ', src);
         document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
         pos_before = source_pos;
@@ -101,12 +104,12 @@ window.addEventListener('load', function () {
     
     scroll.on('scroll', (args) => {
         // Get all current elements : args.currentElements
-        console.log(args.speed);
+       // console.log(args.speed);
         if(typeof args.currentElements['el0'] === 'object') {
             let progress = args.currentElements['el0'].progress;
-            console.log(progress);
-            vidProg = Math.fround(Math.min(Math.max(progress-0.17,0.02)*1.8,0.98));
-
+            //console.log(progress);
+            vidProg = Math.min(Math.max(progress-0.17,0.02)*1.8,0.98);
+            console.log('progress:', vidProg);
             video.currentTime = video.duration * vidProg;
             if(args.speed == 0){
                 videos.forEach((value) => {
