@@ -2,8 +2,8 @@
 import LocomotiveScroll from 'locomotive-scroll';
 
 
-const video_sources = ['./knee_final_small.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './sieder_final_small.mp4'];
-const section_ids = ['#page_start', '#page_ketchup', '#page_rain', '#page_sieder'];
+const video_sources = ['./knee_final_small.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './wasser_final_small.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
+const section_ids = ['#page_start', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder'];
 
 function clamp(num, min, max){
     if (num > max){
