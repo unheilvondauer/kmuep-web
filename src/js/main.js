@@ -104,6 +104,20 @@ window.addEventListener('load', function () {
         document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
         pos_before = source_pos;
+        if (video.readyState != 4){
+            document.querySelector("#content").style.visibility = 'hidden';
+            document.querySelector("#loading-container").style.display = 'block';
+            start = Date.now();
+            timeout = 5000;
+            timed_out = false;
+            while ((video.readyState != 4) && !timed_out){
+                if(start - Date.now() > timeout){
+                    timed_out = true;
+                }
+            }
+            document.querySelector("#content").style.visibility = 'visible';
+            document.querySelector("#loading-container").style.display = 'none';
+        }
 
         scroll.scrollTo(0);
 

@@ -135,3 +135,25 @@ video{
     z-index: 5;
     animation: fade-out 1s forwards;
 }
+
+#loading{
+    position: absolute;
+    top: 50%; 
+    height: 10em; 
+    margin-top:-5em;
+    text-align: center;
+    vertical-align: middle;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-name: loading;
+}
+
+@keyframes loading{
+    from{
+        color:lightcoral;
+    }
+    to{
+        color: lightcyan;
+    }
+}
