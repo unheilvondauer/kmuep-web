@@ -32,6 +32,10 @@ window.addEventListener('load', function () {
     video0.addEventListener('animationend', () => {video0.classList.remove('video-current'); video0.classList.add('video-queued');});
     video1.addEventListener('animationend', () => {video1.classList.remove('video-current'); video1.classList.add('video-queued');});
     video2.addEventListener('animationend', () => {video2.classList.remove('video-current'); video2.classList.add('video-queued');});
+    this.document.querySelector('#loading-contaiiner').addEventListener('animationend', () => {
+        this.document.querySelector('#loading-container').style.display = 'none';
+        this.document.querySelector('#loading-container').classList.remove('anim-fade-out');
+     });
 
     var videos = [video1, video2];
     var source_pos = 0;
@@ -77,7 +81,7 @@ window.addEventListener('load', function () {
         function innerCheck(){
             if ((video.readyState == 4) || (timeout <= 50)){
                 document.querySelector('#display-container').style.visibility = 'visible';
-                document.querySelector('#loading-container').style.display = 'none';
+                document.querySelector('#loading-container').classList.add('anim-fade-out');
                 return;
             }else{
                 setTimeout(checkLoading(timeout - 50), 50);
