@@ -1,4 +1,4 @@
-//import {Curtains, Plane} from "curtainsjs"; 
+//import {Curtains, Plane} from 'curtainsjs'; 
 import LocomotiveScroll from 'locomotive-scroll';
 
 
@@ -73,6 +73,19 @@ window.addEventListener('load', function () {
         
     }
 
+    function checkLoading(timeout){
+        function innerCheck(){
+            if ((video.readyState == 4) || (timeout <= 50)){
+                document.querySelector('#display-container').style.visibility = 'visible';
+                document.querySelector('#loading-container').style.display = 'none';
+                return;
+            }else{
+                setTimeout(checkLoading(timeout - 50), 50);
+            }
+        }
+        return innerCheck;
+    }
+
     function next_video(backwards){
         var anum = 1;
         var vnum = 0;
@@ -104,19 +117,10 @@ window.addEventListener('load', function () {
         document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
         pos_before = source_pos;
-        if (video.readyState != 4){
-            document.querySelector("#content").style.visibility = 'hidden';
-            document.querySelector("#loading-container").style.display = 'block';
-            start = Date.now();
-            timeout = 5000;
-            timed_out = false;
-            while ((video.readyState != 4) && !timed_out){
-                if(start - Date.now() > timeout){
-                    timed_out = true;
-                }
-            }
-            document.querySelector("#content").style.visibility = 'visible';
-            document.querySelector("#loading-container").style.display = 'none';
+        if (video.readyState < 4){
+            document.querySelector('#display-container').style.visibility = 'hidden';
+            document.querySelector('#loading-container').style.display = 'block';
+            setTimeout(checkLoading(10000));
         }
 
         scroll.scrollTo(0);
