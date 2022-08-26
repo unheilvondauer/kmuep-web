@@ -76,7 +76,7 @@ window.addEventListener('load', function () {
         }
         
     }
-
+    
     function checkLoading(timeout){
         function innerCheck(){
             if ((video.readyState == 4) || (timeout <= 50)){
@@ -128,8 +128,21 @@ window.addEventListener('load', function () {
         }
 
         scroll.scrollTo(0);
-
     }
+
+    /*  var src = new Promise(resolve => {
+            const res = fetch(next_source(backwards));
+            const blob = res.blob();
+            resolve(URL.createObjectURL(blob));
+        }).then(result => {
+            var source = document.createElement('source');
+            source.setAttribute('src', result);
+            source.setAttribute('type', 'video/mp4');
+            videos[vnum].appendChild(source);
+            videos[vnum].load(); 
+        });
+        */
+
     btnNext.addEventListener('click', (args) => {
         next_video(false, args);
     });
