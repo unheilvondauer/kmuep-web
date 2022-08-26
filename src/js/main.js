@@ -3,7 +3,7 @@ import LocomotiveScroll from 'locomotive-scroll';
 
 
 const video_sources = ['./knee_final_small.mp4', 'rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', 'dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
-const section_ids = ['#page_start', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
+const section_ids = ['#page_start', '#page_rain', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -14,6 +14,7 @@ function clamp(num, min, max){
     }
     return num;
 }
+
 
 window.addEventListener('load', function () {
     const scroll = new LocomotiveScroll({
@@ -35,6 +36,7 @@ window.addEventListener('load', function () {
     var videos = [video1, video2];
     var source_pos = 0;
     var pos_before = 0;
+    var ketchupPos = 0;
     var video = video0;
     const btnNext = this.document.querySelector('#next');
     const btnPrev = this.document.querySelector('#prev');
@@ -44,7 +46,20 @@ window.addEventListener('load', function () {
         value.addEventListener('click', () => {scroll.scrollTo(scrollpos);});
     });
 
-    
+    document.addEventListener('keypress', (event) => {
+       // console.log(event.key);
+        if ((section_ids[source_pos] == '#page_ketchup') && event.key == 'Enter'){
+            event.preventDefault();
+            if (ketchupPos == 0){
+                ketchupPos = 570;
+            }else if (ketchupPos < 2200){
+                ketchupPos += 90;
+            }else{
+                ketchupPos = 0;
+            }
+            scroll.scrollTo(ketchupPos);
+        }
+    });
 
 
     function next_source(backwards){
@@ -58,8 +73,7 @@ window.addEventListener('load', function () {
         
     }
 
-    function next_video(backwards, args){
-        console.log(args);
+    function next_video(backwards){
         var anum = 1;
         var vnum = 0;
         if (backwards){
@@ -84,14 +98,14 @@ window.addEventListener('load', function () {
         source.setAttribute('type', 'video/mp4');
         videos[vnum].appendChild(source);
         videos[vnum].load(); 
-        console.log('Backwards: ', backwards);
+        /*console.log('Backwards: ', backwards);
         console.log('vnum: %d, anum: %d', vnum, anum);
-        console.log('src: ', src);
+        console.log('src: ', src);*/
         document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
         pos_before = source_pos;
 
-        scroll.scrollTo(0.18);
+        scroll.scrollTo(0);
 
     }
     btnNext.addEventListener('click', (args) => {
@@ -103,17 +117,20 @@ window.addEventListener('load', function () {
     });
     
     scroll.on('scroll', (args) => {
-        // Get all current elements : args.currentElements
-       // console.log(args.speed);
         if(typeof args.currentElements['el0'] === 'object') {
             let progress = args.currentElements['el0'].progress;
-            //console.log(progress);
             vidProg = Math.min(Math.max(progress-0.17,0.02)*1.8,0.98);
-            console.log('progress:', vidProg);
-            video.currentTime = video.duration * vidProg;
+            if (!isFinite(vidProg)){
+                vidProg = 0;
+            }
+            //console.log('progress:', vidProg);
+            video.currentTime = Math.fround(video.duration * vidProg);
             if(args.speed == 0){
                 videos.forEach((value) => {
-                    value.currentTime = value.duration * vidProg;
+                    const time = Math.fround(value.duration * vidProg);
+                    if (isFinite(time)){
+                        value.currentTime = time;
+                    }
                 });
             }
             // ouput log example: 0.34
