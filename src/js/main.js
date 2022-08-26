@@ -3,7 +3,7 @@ import LocomotiveScroll from 'locomotive-scroll';
 
 
 const video_sources = ['./knee_final_small.mp4', 'rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', 'dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
-const section_ids = ['#page_start', '#page_rain', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
+const section_ids = ['#page_start', '#page_sieder', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -15,8 +15,52 @@ function clamp(num, min, max){
     return num;
 }
 
+function randn_bm(min, max, skew) {
+    let u = 0, v = 0;
+    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+    while(v === 0) v = Math.random();
+    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+    
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0){ 
+      num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+    }
+    else{
+      num = Math.pow(num, skew); // Skew
+      num *= max - min; // Stretch to fill range
+      num += min; // offset to min
+    }
+    return num;
+  }
+
+
+function setupRain(){
+    function makeCtrl(top, left, scrollpos, scrollspeed){
+        var l = document.createElement('a');
+        l.classList.add('btn_scroll');
+        l.classList.add('ctrl_bk');
+        l.setAttribute('data-scrollpos', scrollpos);
+        l.setAttribute('href', 'javascript:void(0)');
+        l.style.position = 'absolute';
+        l.style.top = top;
+        l.style.left = left;
+        l.setAttribute('data-scroll', '');
+        l.setAttribute('data-scroll-speed', scrollspeed);
+        l.innerText = '↓'; 
+        return l;
+    }
+
+    for(var i = 0; i < 600; i++){
+
+        const top = randn_bm(-300,1080, 0.6);
+        var ct = makeCtrl(`${top}px`,`${(Math.random()*130)-15.0}%`, top + 250, (Math.random()*10).toString());
+        document.querySelector('#page_rain').appendChild(ct);
+    }
+}
+
 
 window.addEventListener('load', function () {
+    setupRain();
     const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
         smooth: true,
@@ -32,7 +76,7 @@ window.addEventListener('load', function () {
     video0.addEventListener('animationend', () => {video0.classList.remove('video-current'); video0.classList.add('video-queued');});
     video1.addEventListener('animationend', () => {video1.classList.remove('video-current'); video1.classList.add('video-queued');});
     video2.addEventListener('animationend', () => {video2.classList.remove('video-current'); video2.classList.add('video-queued');});
-    this.document.querySelector('#loading-contaiiner').addEventListener('animationend', () => {
+    this.document.querySelector('#loading-container').addEventListener('animationend', () => {
         this.document.querySelector('#loading-container').style.display = 'none';
         this.document.querySelector('#loading-container').classList.remove('anim-fade-out');
      });
@@ -159,7 +203,9 @@ window.addEventListener('load', function () {
                 vidProg = 0;
             }
             //console.log('progress:', vidProg);
-            video.currentTime = Math.fround(video.duration * vidProg);
+            if (Math.abs(args.speed) > 0.2){
+                video.currentTime = Math.fround(video.duration * vidProg);
+            }
             if(args.speed == 0){
                 videos.forEach((value) => {
                     const time = Math.fround(value.duration * vidProg);
