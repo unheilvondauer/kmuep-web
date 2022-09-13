@@ -1,9 +1,8 @@
 //import {Curtains, Plane} from 'curtainsjs'; 
 import LocomotiveScroll from 'locomotive-scroll';
 
-
-const video_sources = ['./knee_final_small.mp4', 'rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', 'dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
-const section_ids = ['#page_start', '#page_sieder', '#page_ketchup', '#page_rain', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
+const video_sources = ['./knee_final_small.mp4', './rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
+const section_ids = ['#page_start', '#page_sieder', '#page_ketchup', '#page_rain', '#page_dots', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -46,12 +45,11 @@ function setupRain(){
         l.style.left = left;
         l.setAttribute('data-scroll', '');
         l.setAttribute('data-scroll-speed', scrollspeed);
-        l.innerText = '↓'; 
+        l.innerHTML = '<span class="material-symbols-outlined"> arrow_downward </span>'; 
         return l;
     }
 
     for(var i = 0; i < 600; i++){
-
         const top = randn_bm(-300,1080, 0.6);
         var ct = makeCtrl(`${top}px`,`${(Math.random()*130)-15.0}%`, top + 250, (Math.random()*10).toString());
         document.querySelector('#page_rain').appendChild(ct);
@@ -60,6 +58,7 @@ function setupRain(){
 
 
 window.addEventListener('load', function () {
+
     setupRain();
     const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
@@ -93,6 +92,18 @@ window.addEventListener('load', function () {
         var scrollpos = parseInt(value.dataset.scrollpos);
         value.addEventListener('click', () => {scroll.scrollTo(scrollpos);});
     });
+
+    function onSectionOpen(section){
+        if (section == "#page_dots"){
+            document.querySelector("#plotter_audio").play()
+        }
+    }
+    
+    function onSectionClose(section){
+        if (section == "#page_dots"){
+            document.querySelector("#plotter_audio").pause()
+        }
+    }
 
     document.addEventListener('keypress', (event) => {
        // console.log(event.key);
@@ -164,6 +175,8 @@ window.addEventListener('load', function () {
         console.log('src: ', src);*/
         document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
+        onSectionOpen(section_ids[source_pos]);
+        onSectionClose(section_ids[pos_before]);
         pos_before = source_pos;
         if (video.readyState < 4){
             document.querySelector('#display-container').style.visibility = 'hidden';

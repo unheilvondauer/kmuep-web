@@ -88,7 +88,6 @@ video{
 }
 
 .content{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     position: relative;
     margin: auto;
     color: $main_color;
@@ -96,9 +95,31 @@ video{
     width: 80vw;
     height: 4000px;
     p{
+        font-family: 'Josefin Slab', serif;
         text-align: justify;
         text-justify: inter-word;
+        font-weight: 100;
+        i{
+            font-variant: small-caps;
+            font-style: normal;
+            font-weight: 400;
+        }
     }
+    h1{
+        font-family: 'Codystar', cursive;
+        color: #ffa;
+    }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght'100, 'GRAD' -25, 'opsz' 48;
+  font-size: 48px;
+}
+
+.monospace{
+    font-family: 'Roboto Mono', monospace !important;
+    font-weight: 100 !important;
+    font-size: medium !important;
 }
 
 .ctrl{
