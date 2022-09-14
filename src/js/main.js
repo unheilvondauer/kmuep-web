@@ -109,9 +109,9 @@ window.addEventListener('load', function () {
         if ((section_ids[source_pos] == '#page_ketchup') && event.key == 'Enter'){
             event.preventDefault();
             if (ketchupPos == 0){
-                ketchupPos = 570;
-            }else if (ketchupPos < 2200){
-                ketchupPos += 90;
+                ketchupPos = 610;
+            }else if (ketchupPos < 2660){
+                ketchupPos += 20;
             }else{
                 ketchupPos = 0;
             }
