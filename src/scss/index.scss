@@ -141,6 +141,10 @@ video{
     }
 }
 
+.ontop{
+    z-index: 1000;
+}
+
 .ctrl_bk{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif !important;
     position: absolute;

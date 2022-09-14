@@ -1,8 +1,7 @@
-//import {Curtains, Plane} from 'curtainsjs'; 
 import LocomotiveScroll from 'locomotive-scroll';
 
 const video_sources = ['./knee_final_small.mp4', './rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
-const section_ids = ['#page_start', '#page_sieder', '#page_ketchup', '#page_rain', '#page_dots', '#page_sieder', '#page_sieder', '#page_sieder', '#page_sieder'];
+const section_ids = ['#page_start', '#page_bike', '#page_ketchup', '#page_rain', '#page_dots', '#page_sieder', '#page_breathe', '#page_sieder2', '#page_empty'];
 
 function clamp(num, min, max){
     if (num > max){
@@ -94,14 +93,14 @@ window.addEventListener('load', function () {
     });
 
     function onSectionOpen(section){
-        if (section == "#page_dots"){
-            document.querySelector("#plotter_audio").play()
+        if (section == '#page_dots'){
+            document.querySelector('#plotter_audio').play();
         }
     }
     
     function onSectionClose(section){
-        if (section == "#page_dots"){
-            document.querySelector("#plotter_audio").pause()
+        if (section == '#page_dots'){
+            document.querySelector('#plotter_audio').pause();
         }
     }
 
@@ -173,8 +172,8 @@ window.addEventListener('load', function () {
         /*console.log('Backwards: ', backwards);
         console.log('vnum: %d, anum: %d', vnum, anum);
         console.log('src: ', src);*/
-        document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         document.querySelector(section_ids[pos_before]).style.visibility = 'hidden';
+        document.querySelector(section_ids[source_pos]).style.visibility = 'visible';
         onSectionOpen(section_ids[source_pos]);
         onSectionClose(section_ids[pos_before]);
         pos_before = source_pos;
