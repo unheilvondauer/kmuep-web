@@ -1,6 +1,6 @@
 import LocomotiveScroll from 'locomotive-scroll';
 
-const video_sources = ['./knee_final_small.mp4', './rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './dots_2.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
+const video_sources = ['./knee_final_small.mp4', './rad.mp4', './ketchup_final_small.mp4', './rain_final_small.mp4', './dots_final.mp4','./wasser_final_small.mp4','./aldi.mp4','./sieder_2.mp4','./sieder_final_small.mp4'];
 const section_ids = ['#page_start', '#page_bike', '#page_ketchup', '#page_rain', '#page_dots', '#page_sieder', '#page_breathe', '#page_sieder2', '#page_empty'];
 
 function clamp(num, min, max){
@@ -111,7 +111,7 @@ window.addEventListener('load', function () {
             if (ketchupPos == 0){
                 ketchupPos = 610;
             }else if (ketchupPos < 2660){
-                ketchupPos += 20;
+                ketchupPos += 50;
             }else{
                 ketchupPos = 0;
             }
@@ -166,7 +166,11 @@ window.addEventListener('load', function () {
         var source = document.createElement('source');
         var src = next_source(backwards);
         source.setAttribute('src', src);
-        source.setAttribute('type', 'video/mp4');
+        if (src.endsWith('mp4')){
+             source.setAttribute('type', 'video/mp4');
+        }else{
+            source.setAttribute('type', 'video/webm');
+        }
         videos[vnum].appendChild(source);
         videos[vnum].load(); 
         /*console.log('Backwards: ', backwards);
